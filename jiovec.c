@@ -6,6 +6,7 @@
 #include <sys/sysctl.h>
 
 #include <netinet/in.h>
+#include <netinet/ip.h>
 #include <arpa/inet.h>
 
 #include <err.h>
@@ -26,6 +27,7 @@ main()
 	char jail_hostname[] = "minimal.example.org";
 	char jail_ipv4[] = "127.0.13.41";
 	char jail_ipv6[] = "fd::0d29";
+	int raw_sockets = 1;
 	int persist = 1;
 	int jid = 12345;
 
@@ -69,6 +71,9 @@ main()
 		{ .iov_base = "ip6.addr"     , .iov_len = sizeof("ip6.addr")      },
 		{ .iov_base = &inet6_addr    , .iov_len = sizeof(inet6_addr)      },
 
+		{ .iov_base = "allow.raw_sockets", .iov_len = sizeof("allow.raw_sockets") },
+		{ .iov_base = &raw_sockets,  .iov_len = sizeof(raw_sockets)       },
+
 		{ .iov_base = "persist"      , .iov_len = sizeof("persist")       },
 		{ .iov_base = &persist       , .iov_len = sizeof(persist)         },
 
@@ -92,9 +97,9 @@ main()
 		return EXIT_FAILURE;
 	}
 
-	printf("JAILED jid=%d is sleeping.\n", jid);
+	printf("JAILED jid=%d is pinging.\n", jid);
 
-	execlp("/bin/sleep", "sleep", "5", NULL);
+	execlp("/sbin/ping", "ping", "-c", "5", "localhost", NULL);
 	err(1, "execlp()");
 	return EXIT_SUCCESS;
 }
