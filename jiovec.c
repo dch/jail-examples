@@ -23,6 +23,7 @@ main()
 {
 	char jail_path[] = "/";
 	char jail_name[] = "minimal";
+	char jail_hostname[] = "minimal.example.org";
 
 	char jail_errmsg[JAIL_ERRMSGLEN];
 	jail_errmsg[0] = 0;
@@ -33,6 +34,9 @@ main()
 
 		{ .iov_base = "name"         , .iov_len = sizeof("name")          },
 		{ .iov_base = jail_name      , .iov_len = sizeof(jail_name)       },
+
+		{ .iov_base = "host.hostname", .iov_len = sizeof("host.hostname") },
+		{ .iov_base = jail_hostname  , .iov_len = sizeof(jail_hostname)   },
 
 		{ .iov_base = "errmsg"       , .iov_len = sizeof("errmsg")        },
 		{ .iov_base = jail_errmsg    , .iov_len = JAIL_ERRMSGLEN          }
