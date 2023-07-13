@@ -26,6 +26,7 @@ main()
 	char jail_hostname[] = "minimal.example.org";
 	char jail_ipv4[] = "127.0.13.41";
 	int persist = 1;
+	int jid = 12345;
 
 	char jail_errmsg[JAIL_ERRMSGLEN];
 	jail_errmsg[0] = 0;
@@ -58,11 +59,14 @@ main()
 		{ .iov_base = "persist"      , .iov_len = sizeof("persist")       },
 		{ .iov_base = &persist       , .iov_len = sizeof(persist)         },
 
+		{ .iov_base = "jid"          , .iov_len = sizeof("jid")           },
+		{ .iov_base = &jid           , .iov_len = sizeof(jid)             },
+
 		{ .iov_base = "errmsg"       , .iov_len = sizeof("errmsg")        },
 		{ .iov_base = jail_errmsg    , .iov_len = JAIL_ERRMSGLEN          }
 	};
 
-	int jid = jail_set(iov, sizeof(iov) / sizeof(*iov), JAIL_CREATE);
+	jid = jail_set(iov, sizeof(iov) / sizeof(*iov), JAIL_CREATE);
 
 	if (jid < 0) {
 		/* provide additional information via iovec errmsg */
