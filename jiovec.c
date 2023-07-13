@@ -25,6 +25,7 @@ main()
 	char jail_name[] = "minimal";
 	char jail_hostname[] = "minimal.example.org";
 	char jail_ipv4[] = "127.0.13.41";
+	char jail_ipv6[] = "fd::0d29";
 	int persist = 1;
 	int jid = 12345;
 
@@ -42,6 +43,15 @@ main()
 		exit(EXIT_FAILURE);
 	}
 
+	struct in6_addr inet6_addr;
+	result = inet_pton(AF_INET6, jail_ipv6, &inet6_addr);
+	if (result <= 0) {
+		if (result == 0)
+			fprintf(stderr, "inet_pton: invalid IPv6 address\n");
+		else
+			perror("inet_pton");
+		exit(EXIT_FAILURE);
+	}
 
 	struct iovec iov[] = {
 		{ .iov_base = "path"         , .iov_len = sizeof("path")          },
@@ -55,6 +65,9 @@ main()
 
 		{ .iov_base = "ip4.addr"     , .iov_len = sizeof("ip4.addr")      },
 		{ .iov_base = &inet4_addr    , .iov_len = sizeof(inet4_addr)      },
+
+		{ .iov_base = "ip6.addr"     , .iov_len = sizeof("ip6.addr")      },
+		{ .iov_base = &inet6_addr    , .iov_len = sizeof(inet6_addr)      },
 
 		{ .iov_base = "persist"      , .iov_len = sizeof("persist")       },
 		{ .iov_base = &persist       , .iov_len = sizeof(persist)         },
