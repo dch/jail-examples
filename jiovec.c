@@ -28,6 +28,7 @@ main()
 	char jail_ipv4[] = "127.0.13.41";
 	char jail_ipv6[] = "fd::0d29";
 	char jail_release[] = "13.2-RELEASE-p123";
+	char jail_uuid[] = "a19942fb-cf72-44e8-a7b5-b431e946add6";
 	int jail_reldate = 1400123;
 	int raw_sockets = 1;
 	int persist = 1;
@@ -89,6 +90,9 @@ main()
 
 		{ .iov_base = "osreldate"    , .iov_len = sizeof("osreldate")     },
 		{ .iov_base = &jail_reldate  , .iov_len = sizeof(jail_reldate)    },
+
+		{ .iov_base = "host.hostuuid", .iov_len = sizeof("host.hostuuid") },
+		{ .iov_base = jail_uuid      , .iov_len = sizeof(jail_uuid)       },
 
 		{ .iov_base = "linux.osname" , .iov_len = sizeof("linux.osname")  },
 		{ .iov_base = jail_tags      , .iov_len = sizeof(jail_tags)       },
