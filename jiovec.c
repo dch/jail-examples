@@ -24,9 +24,22 @@ main()
 	char jail_path[] = "/";
 	char jail_name[] = "minimal";
 	char jail_hostname[] = "minimal.example.org";
+	char jail_ipv4[] = "127.0.13.41";
 
 	char jail_errmsg[JAIL_ERRMSGLEN];
 	jail_errmsg[0] = 0;
+
+	// convert to binary form
+	struct in_addr inet4_addr;
+	int result = inet_pton(AF_INET, jail_ipv4, &inet4_addr);
+	if (result <= 0) {
+		if (result == 0)
+			fprintf(stderr, "inet_pton: invalid IPv4 address\n");
+		else
+			perror("inet_pton");
+		exit(EXIT_FAILURE);
+	}
+
 
 	struct iovec iov[] = {
 		{ .iov_base = "path"         , .iov_len = sizeof("path")          },
@@ -37,6 +50,9 @@ main()
 
 		{ .iov_base = "host.hostname", .iov_len = sizeof("host.hostname") },
 		{ .iov_base = jail_hostname  , .iov_len = sizeof(jail_hostname)   },
+
+		{ .iov_base = "ip4.addr"     , .iov_len = sizeof("ip4.addr")      },
+		{ .iov_base = &inet4_addr    , .iov_len = sizeof(inet4_addr)      },
 
 		{ .iov_base = "errmsg"       , .iov_len = sizeof("errmsg")        },
 		{ .iov_base = jail_errmsg    , .iov_len = JAIL_ERRMSGLEN          }
