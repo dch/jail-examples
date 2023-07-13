@@ -33,6 +33,8 @@ main()
 	int persist = 1;
 	int jid = 12345;
 
+	char jail_tags[] = "big=true small=false boolean max=64 characters";
+
 	char jail_errmsg[JAIL_ERRMSGLEN];
 	jail_errmsg[0] = 0;
 
@@ -87,6 +89,9 @@ main()
 
 		{ .iov_base = "osreldate"    , .iov_len = sizeof("osreldate")     },
 		{ .iov_base = &jail_reldate  , .iov_len = sizeof(jail_reldate)    },
+
+		{ .iov_base = "linux.osname" , .iov_len = sizeof("linux.osname")  },
+		{ .iov_base = jail_tags      , .iov_len = sizeof(jail_tags)       },
 
 		{ .iov_base = "errmsg"       , .iov_len = sizeof("errmsg")        },
 		{ .iov_base = jail_errmsg    , .iov_len = JAIL_ERRMSGLEN          }
