@@ -97,9 +97,34 @@ main()
 		return EXIT_FAILURE;
 	}
 
-	printf("JAILED jid=%d is pinging.\n", jid);
+	/* from outside the jail, we can use jail_getid(), inside it will fail */
+	jid = jail_getid(jail_name);
+
+	if (jid > 0) {
+		printf("OUTSIDE jid=%d.\n", jid);
+	} else {
+		printf("INSIDE  jid=%d.\n", jid);
+		return EXIT_FAILURE;
+	}
+
+	/* attach and check jail_getid() again */
+	if (jail_attach(jid) < 0) {
+		err(1, "jail_attach");
+	}
+
+	jid = jail_getid(jail_name);
+
+	if (jid > 0) {
+		printf("OUTSIDE jid=%d.\n", jid);
+		return EXIT_FAILURE;
+	} else {
+		printf("INSIDE  jid=%d.\n", jid);
+	}
+
+	printf("JAILED  pinging.\n");
 
 	execlp("/sbin/ping", "ping", "-c", "5", "localhost", NULL);
 	err(1, "execlp()");
+
 	return EXIT_SUCCESS;
 }

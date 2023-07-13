@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Werror -g -O0
+CFLAGS = -Wall -Werror -g -O0 -ljail
 
 TARGETS = jiovec
 all: $(TARGETS)
