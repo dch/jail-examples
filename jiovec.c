@@ -27,6 +27,8 @@ main()
 	char jail_hostname[] = "minimal.example.org";
 	char jail_ipv4[] = "127.0.13.41";
 	char jail_ipv6[] = "fd::0d29";
+	char jail_release[] = "13.2-RELEASE-p123";
+	int jail_reldate = 1400123;
 	int raw_sockets = 1;
 	int persist = 1;
 	int jid = 12345;
@@ -79,6 +81,12 @@ main()
 
 		{ .iov_base = "jid"          , .iov_len = sizeof("jid")           },
 		{ .iov_base = &jid           , .iov_len = sizeof(jid)             },
+
+		{ .iov_base = "osrelease"    , .iov_len = sizeof("osrelease")     },
+		{ .iov_base = jail_release   , .iov_len = sizeof(jail_release)    },
+
+		{ .iov_base = "osreldate"    , .iov_len = sizeof("osreldate")     },
+		{ .iov_base = &jail_reldate  , .iov_len = sizeof(jail_reldate)    },
 
 		{ .iov_base = "errmsg"       , .iov_len = sizeof("errmsg")        },
 		{ .iov_base = jail_errmsg    , .iov_len = JAIL_ERRMSGLEN          }
